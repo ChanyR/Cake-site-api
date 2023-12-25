@@ -26,8 +26,8 @@ exports.validatecake = (_bodyValid) => {
         order_number: Joi.string().min(2).max(99).required(),
         baker_id: Joi.string().required(),
         cake_base: Joi.string().required(),
-        // cake_decorations: Joi.string().required(),
-        cake_decorations: Joi.allow(),
+        cake_decorations: Joi.required(),
+        // cake_decorations: Joi.allow(),
         price: Joi.number().min(1).max(9999).required(),
     })
     return joiSchema.validate(_bodyValid);

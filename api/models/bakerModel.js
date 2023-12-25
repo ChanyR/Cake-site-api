@@ -18,7 +18,7 @@ const bakerSchema = new mongoose.Schema({
     }
 })
 
-exports.CakeModel = mongoose.model("cakes", bakerSchema);
+exports.BakerModel= mongoose.model("cakes", bakerSchema);
 
 exports.validatecake = (_bodyValid) => {
     let joiSchema = Joi.object({
