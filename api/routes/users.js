@@ -1,5 +1,4 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const { UserModel, validateUser, loginValid, createToken } = require("../models/userModel");
 const { auth, authAdmin } = require("../middlewares/auth");
 const userControllers=require("../controllers/users")
