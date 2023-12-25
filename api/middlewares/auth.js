@@ -44,7 +44,7 @@ exports.authAdmin = async (req, res, next) => {
     try {
         let decodeToken = jwt.verify(token, config.tokenSecret);
         if (decodeToken.role != "admin") {
-            return res.status(401).json({ msg: "Token invalid or expired, code: 6A" })
+            return res.status(401).json({ msg: "Token invalid or expired, code: 6B" })
         }
         req.tokenData = decodeToken;
         next();

@@ -24,9 +24,10 @@ exports.CakeModel = mongoose.model("cakes", cakeSchema);
 exports.validatecake = (_bodyValid) => {
     let joiSchema = Joi.object({
         order_number: Joi.string().min(2).max(99).required(),
-        baker_id: Joi.string().require(),
-        cake_base: Joi.string().require(),
-        cake_decorations: Joi.string().require(),
+        baker_id: Joi.string().required(),
+        cake_base: Joi.string().required(),
+        // cake_decorations: Joi.string().required(),
+        cake_decorations: Joi.allow(),
         price: Joi.number().min(1).max(9999).required(),
     })
     return joiSchema.validate(_bodyValid);
