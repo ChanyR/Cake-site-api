@@ -18,15 +18,15 @@ const bakerSchema = new mongoose.Schema({
     }
 })
 
-exports.BakerModel= mongoose.model("cakes", bakerSchema);
+exports.BakerModel= mongoose.model("baker", bakerSchema);
 
-exports.validatecake = (_bodyValid) => {
+exports.validateBaker = (_bodyValid) => {
     let joiSchema = Joi.object({
         name: Joi.string().min(2).max(99).required(),
         likes: Joi.number().min(0).max(999999999).required(),
-        comments: Joi.string().min(2).max(99).required(),
-        cake_bases:Joi.string().require(),
-        cake_decorations:Joi.string().require()
+        // comments: Joi.string().min(2).max(99).required(),
+        // cake_bases:Joi.string().require(),
+        // cake_decorations:Joi.string().require()
     })
     return joiSchema.validate(_bodyValid);
 }
