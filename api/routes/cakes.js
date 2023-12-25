@@ -1,5 +1,5 @@
 const express = require("express");
-const { auth } = require("../middlewares/auth");
+const { auth,authBaker } = require("../middlewares/auth");
 const { CakeModel, validatecake } = require("../models/cakeModel");
 const cakeControllers=require("../controllers/cakes")
 const router = express.Router();
