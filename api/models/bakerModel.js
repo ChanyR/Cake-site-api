@@ -11,7 +11,7 @@ const bakerSchema = new mongoose.Schema({
     }],
     cake_decorations: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Decorations' 
+        ref: 'DecorationsModel' 
     }],
     date_created: {
         type: Date, default: Date.now()
