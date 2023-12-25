@@ -17,6 +17,10 @@ const cakeSchema = new mongoose.Schema({
         type: Date, default: Date.now()
     },
     price: Number,
+    status: {
+        type: String,
+        enum: ['BAKING', 'DONE', 'SHIPPING','ACCEPTED']
+    }
 })
 
 exports.CakeModel = mongoose.model("cakes", cakeSchema);
@@ -29,6 +33,7 @@ exports.validatecake = (_bodyValid) => {
         cake_decorations: Joi.required(),
         // cake_decorations: Joi.allow(),
         price: Joi.number().min(1).max(9999).required(),
+        status:Joi.required(),
     })
     return joiSchema.validate(_bodyValid);
 }
