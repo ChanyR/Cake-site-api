@@ -1,46 +1,46 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-const defaultCakeDecorations = [
-  "Sprinkles",
-  "Fondant Flowers",
-  "Edible Glitter",
-  "Chocolate Shards",
-  "Candied Nuts",
-  "Fresh Fruits",
-  "Whipped Cream",
-  "Ganache Drizzle",
-  "Macarons",
-  "White Chocolate Curls",
-  "Berries",
-  "Caramel Sauce",
-  "Nuts",
-  "Mint Leaves",
-  "Oreo Crumbs",
-  "Coconut Flakes",
-  "Marshmallows",
-  "Candy Canes",
-  "Rainbow Sprinkles",
-  "Gold Leaf"
+const defaultCakeBases = [
+  "Chocolate",
+  "Vanilla",
+  "Strawberry",
+  "Red Velvet",
+  "Lemon",
+  "Carrot",
+  "Marble",
+  "Coconut",
+  "Funfetti",
+  "Pumpkin Spice",
+  "Caramel",
+  "Almond",
+  "Hazelnut",
+  "Mocha",
+  "Banana",
+  "Raspberry",
+  "Blueberry",
+  "Pineapple",
+  "Coconut",
+  "Mint Chocolate Chip"
 ];
 
-const decorationsSchema = new mongoose.Schema({
+const basesSchema = new mongoose.Schema({
     order_date: {
         type: Date,
         default: Date.now()
     },
     price: Number,
-    decorations: {
+    cake_bases: {
         type: [String],
-    //  default: defaultCakeDecorations
+        default: defaultCakeBases
     }
 });
 
-exports.DecorationsModel = mongoose.model("decorations", decorationsSchema);
+exports.BasesModel = mongoose.model("bases", basesSchema);
 
-exports.validatedecorations = (_bodyValid) => {
+exports.validatebases = (_bodyValid) => {
     let joiSchema = Joi.object({
-        // Define your validation rules here
+        cake_base:Joi.string().require(),
     });
     return joiSchema.validate(_bodyValid);
 };

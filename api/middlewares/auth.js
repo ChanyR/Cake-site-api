@@ -16,6 +16,26 @@ exports.auth = async (req, res, next) => {
     }
 }
 
+
+exports.authBaker = async (req, res, next) => {
+    let token = req.header("x-api-key");
+    if (!token) {
+        return res.status(401).json({ msg: "You need to send token to this endpoint url" });
+    }
+    try {
+        let decodeToken = jwt.verify(token, config.tokenSecret);
+        if (decodeToken.role != "baker") {
+            return res.status(401).json({ msg: "Token invalid or expired, code: 6A" })
+        }
+        req.tokenData = decodeToken;
+        next();
+    }
+    catch (err) {
+        return res.status(401).json({ msg: "Token not valid or expired log in again" })
+    }
+}
+
+
 exports.authAdmin = async (req, res, next) => {
     let token = req.header("x-api-key");
     if (!token) {

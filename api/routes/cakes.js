@@ -14,13 +14,13 @@ router.get("/search", cakeControllers.search)
 router.get("/category/:catname", cakeControllers.getByCategory)
 
 // domain/cakes
-router.post("/", auth, cakeControllers.addCake)
+router.post("/", authBaker, cakeControllers.addCake)
 
 // domain/cakes/:editId
-router.put("/:editId", auth, cakeControllers.editCakeById)
+router.put("/:editId", authBaker, cakeControllers.editCakeById)
 
 // domain/cakes/:delId
-router.delete("/:delId", auth, cakeControllers.deleteCakeById)
+router.delete("/:delId", authBaker, cakeControllers.deleteCakeById)
 
 // domain/cakes/prices
 router.get("/prices", cakeControllers.getByPrices)

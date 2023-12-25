@@ -1,19 +1,47 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-const basesSchema = new mongoose.Schema({
-   
+const defaultCakeDecorations = [
+  "Sprinkles",
+  "Fondant Flowers",
+  "Edible Glitter",
+  "Chocolate Shards",
+  "Candied Nuts",
+  "Fresh Fruits",
+  "Whipped Cream",
+  "Ganache Drizzle",
+  "Macarons",
+  "White Chocolate Curls",
+  "Berries",
+  "Caramel Sauce",
+  "Nuts",
+  "Mint Leaves",
+  "Oreo Crumbs",
+  "Coconut Flakes",
+  "Marshmallows",
+  "Candy Canes",
+  "Rainbow Sprinkles",
+  "Gold Leaf"
+];
+
+const decorationsSchema = new mongoose.Schema({
     order_date: {
-        type: Date, default: Date.now()
+        type: Date,
+        default: Date.now()
     },
-    price:Number,
-})
+    price: Number,
+    decorations: {
+        type: [String],
+        default: defaultCakeDecorations
+    }
+});
 
-exports.DecorationsModel = mongoose.model("decorations", basesSchema);
+exports.DecorationsModel = mongoose.model("decorations", decorationsSchema);
 
-exports.validatebases = (_bodyValid) => {
+exports.validatedecorations = (_bodyValid) => {
     let joiSchema = Joi.object({
-        
-    })
+        decorations:Joi.string().require(),
+
+    });
     return joiSchema.validate(_bodyValid);
-}
+};

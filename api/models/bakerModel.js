@@ -7,11 +7,11 @@ const bakerSchema = new mongoose.Schema({
     comments: Array,
     cake_bases: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'BasesModel' // This is a reference to another Mongoose model, replace with your actual model name
+        ref: 'BasesModel' 
     }],
     cake_decorations: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Decorations' // This is a reference to another Mongoose model, replace with your actual model name
+        ref: 'Decorations' 
     }],
     date_created: {
         type: Date, default: Date.now()

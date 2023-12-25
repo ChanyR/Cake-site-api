@@ -6,7 +6,7 @@ const cakeSchema = new mongoose.Schema({
     baker_id: String,
     user_id:String,
     cake_base:String,
-    cake_decorations:Array ,
+    cake_decorations:Array,
     order_date: {
         type: Date, default: Date.now()
     },
