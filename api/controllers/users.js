@@ -1,4 +1,5 @@
 const { UserModel, validateUser, loginValid, createToken } = require("../models/userModel");
+const bcrypt = require("bcrypt");
 
 exports.get=async (req, res) => {
     let perPage = Math.min(req.query.perPage, 20) || 10;
