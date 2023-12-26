@@ -122,6 +122,10 @@ exports.deleteUserById= async (req, res) => {
         let delId = req.params.delId;
         let data;
         if (req.tokenData.role == "admin") {
+            let user=await UserModel.findById(delId);
+            if(user.role=="baker"){
+                await BakerModel.deleteOne({user_id:delId})
+            }
             data = await UserModel.deleteOne({ _id: delId })
         }
         else {
