@@ -5,14 +5,8 @@ const cakeSchema = new mongoose.Schema({
     order_number: String,
     baker_id: String,
     user_id: String,
-    cake_base: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'BasesModel' 
-    },
-    cake_decorations: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'DecorationsModel' 
-    }],
+    cake_base: mongoose.ObjectId,
+    cake_decorations: [mongoose.ObjectId],
     order_date: {
         type: Date, default: Date.now()
     },
