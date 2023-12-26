@@ -7,7 +7,7 @@ exports.get = async (req, res) => {
   let perPage = req.query.perPage || 10;
   let page = req.query.page || 1;
   try {
-    let data = await BakerModel.find({})
+    let data = await BakerModel.find({},{ password: 0 })
       .limit(perPage)
       .skip((page - 1) * perPage)
       .sort({ _id: -1 });
