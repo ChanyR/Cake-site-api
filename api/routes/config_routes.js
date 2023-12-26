@@ -7,5 +7,5 @@ exports.routesInit = (app) => {
     app.use("/", indexRouter);
     app.use("/users", usersRouter);
     app.use("/cakes",cakesRouter);
-    app.use("/baker",bakerRouter);
+    app.use("/bakers",bakerRouter);
 }

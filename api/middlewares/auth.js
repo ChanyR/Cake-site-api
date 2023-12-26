@@ -24,7 +24,7 @@ exports.authBaker = async (req, res, next) => {
     }
     try {
         let decodeToken = jwt.verify(token, config.tokenSecret);
-        if (decodeToken.role != "baker") {
+        if (decodeToken.role != "baker" && decodeToken.role != "admin") {
             return res.status(401).json({ msg: "Token invalid or expired, code: 6A" })
         }
         req.tokenData = decodeToken;
