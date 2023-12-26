@@ -20,7 +20,10 @@ router.post("/", userControllers.addUser)
 router.post("/login", userControllers.login)
 
 // domain/users/:editId
-router.put("/:editId", auth, userControllers.editUserById)
+router.put("/:editId", auth, userControllers.editUserById);
+
+// domain/users/changeToBaker/:userId
+router.put("/changeToBaker/:userId", authAdmin, userControllers.changeToBaker)
 
 // domain/users/:delId
 router.delete("/:delId", auth, userControllers.deleteUserById);

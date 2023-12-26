@@ -5,7 +5,7 @@ const { DecorationsModel } = require("./decorationsModel");
 const bakerSchema = new mongoose.Schema({
   name: String,
   email: String,
-  password: String,
+  user_id:mongoose.ObjectId,
   likes: Number,
   comments: Array,
   cake_bases: [mongoose.ObjectId],
@@ -14,9 +14,6 @@ const bakerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  role:{
-    type:String, default:"baker"
-  }
 });
 
 exports.BakerModel = mongoose.model("bakers", bakerSchema);
@@ -25,7 +22,7 @@ exports.validateBaker = (_bodyValid) => {
   let joiSchema = Joi.object({
     name: Joi.string().min(2).max(99).required(),
     email: Joi.string().min(2).max(100).email().required(),
-    password: Joi.string().min(6).max(50).required(),
+    password: Joi.allow(),
     likes: Joi.number().min(0).max(999999999).required(),
   });
   return joiSchema.validate(_bodyValid);

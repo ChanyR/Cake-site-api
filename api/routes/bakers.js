@@ -25,6 +25,9 @@ router.put("/addDecoration/:decorationId", authBaker, bakerControllers.createDec
 // domain/bakers/addBase/:baseId
 router.put("/addBase/:baseId", authBaker, bakerControllers.createBaseBaker)
 
+// domain/bakers/addComment/:bakerId
+router.put("/addComment/:bakerId", auth, bakerControllers.createCommentBaker)
+
 // domain/bakers/:delId
 router.delete("/:delId", authAdmin, bakerControllers.deleteBakerById)
 

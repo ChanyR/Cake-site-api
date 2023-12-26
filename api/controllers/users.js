@@ -10,7 +10,7 @@ exports.get=async (req, res) => {
 
     try {
         let data = await UserModel
-            .find({},{name:1})
+            .find({},{name:1,role:1})
             .limit(perPage)
             .skip((page - 1) * perPage)
             .sort({ [sort]: reverse })
@@ -74,9 +74,6 @@ exports.login= async (req, res) => {
     }
     try {
         let user = await UserModel.findOne({ email: req.body.email })
-        if(!user){
-            user = await BakerModel.findOne({ email: req.body.email })
-        }
         if (!user) {
             return res.status(401).json({ msg: "Email or password is worng, code:1" })
         }
@@ -136,4 +133,25 @@ exports.deleteUserById= async (req, res) => {
         console.log(err);
         res.status(500).json({ msg: "There error to delete, try again later", err })
     }
+}
+
+exports.changeToBaker=async(req,res)=>{
+    const { userId } = req.params;
+    try {
+        const updatedUser = await UserModel.findByIdAndUpdate(userId,{ role: 'baker' },{ new: true });
+        if (!updatedUser) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+
+        let jsonBaker = { name: updatedUser.name,email: updatedUser.email,user_id:updatedUser._id,likes: 0,};
+        let baker = new BakerModel(jsonBaker);
+        await baker.save();
+
+        updatedUser.password="******";
+        return res.json({ message: 'User role updated to baker', user: updatedUser });
+      } catch (error) {
+        console.error('Error updating user role:', error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+      }
+
 }
