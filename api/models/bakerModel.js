@@ -1,32 +1,32 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
+const { DecorationsModel } = require("./decorationsModel");
 
 const bakerSchema = new mongoose.Schema({
-    name: String,
-    likes: Number,
-    comments: Array,
-    cake_bases: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'BasesModel' 
-    }],
-    cake_decorations: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'DecorationsModel' 
-    }],
-    date_created: {
-        type: Date, default: Date.now()
-    }
-})
+  name: String,
+  email: String,
+  password: String,
+  likes: Number,
+  comments: Array,
+  cake_bases: [mongoose.ObjectId],
+  cake_decorations: [mongoose.ObjectId],
+  date_created: {
+    type: Date,
+    default: Date.now(),
+  },
+  role:{
+    type:String, default:"baker"
+  }
+});
 
-exports.CakeModel = mongoose.model("cakes", bakerSchema);
+exports.BakerModel = mongoose.model("bakers", bakerSchema);
 
-exports.validatecake = (_bodyValid) => {
-    let joiSchema = Joi.object({
-        name: Joi.string().min(2).max(99).required(),
-        likes: Joi.number().min(0).max(999999999).required(),
-        comments: Joi.string().min(2).max(99).required(),
-        cake_bases:Joi.string().require(),
-        cake_decorations:Joi.string().require()
-    })
-    return joiSchema.validate(_bodyValid);
-}
+exports.validateBaker = (_bodyValid) => {
+  let joiSchema = Joi.object({
+    name: Joi.string().min(2).max(99).required(),
+    email: Joi.string().min(2).max(100).email().required(),
+    password: Joi.string().min(6).max(50).required(),
+    likes: Joi.number().min(0).max(999999999).required(),
+  });
+  return joiSchema.validate(_bodyValid);
+};

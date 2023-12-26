@@ -78,7 +78,7 @@ exports.editCakeById= async(req, res) => {
     try {
         let editId = req.params.editId;
         let data;
-        if (req.tokenData.role == "admin") {
+        if (req.tokenData.role == "baker" || req.tokenData.role == "admin") {
             data = await CakeModel.updateOne({ _id: editId }, req.body)
         }
         else {

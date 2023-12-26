@@ -1,4 +1,6 @@
+const { BakerModel } = require("../models/bakerModel");
 const { UserModel, validateUser, loginValid, createToken } = require("../models/userModel");
+const bcrypt = require("bcrypt");
 
 exports.get=async (req, res) => {
     let perPage = Math.min(req.query.perPage, 20) || 10;
@@ -72,6 +74,9 @@ exports.login= async (req, res) => {
     }
     try {
         let user = await UserModel.findOne({ email: req.body.email })
+        if(!user){
+            user = await BakerModel.findOne({ email: req.body.email })
+        }
         if (!user) {
             return res.status(401).json({ msg: "Email or password is worng, code:1" })
         }

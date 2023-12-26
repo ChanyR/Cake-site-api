@@ -14,7 +14,7 @@ router.get("/search", cakeControllers.search)
 router.get("/category/:catname", cakeControllers.getByCategory)
 
 // domain/cakes
-router.post("/", authBaker, cakeControllers.addCake)
+router.post("/", auth, cakeControllers.addCake)
 
 // domain/cakes/:editId
 router.put("/:editId", authBaker, cakeControllers.editCakeById)
