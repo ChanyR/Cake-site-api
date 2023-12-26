@@ -19,6 +19,12 @@ router.put("/:editId", authBaker, bakerControllers.editBakerById)
 // domain/bakers/likes/:editId
 router.put("/likes/:editId", auth, bakerControllers.addLikesToBakerById)
 
+// domain/bakers/addDecoration/:decorationId
+router.put("/addDecoration/:decorationId", authBaker, bakerControllers.createDecorationBaker)
+
+// domain/bakers/addBase/:baseId
+router.put("/addBase/:baseId", authBaker, bakerControllers.createBaseBaker)
+
 // domain/bakers/:delId
 router.delete("/:delId", authAdmin, bakerControllers.deleteBakerById)
 

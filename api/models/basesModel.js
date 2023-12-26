@@ -1,31 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-
-
-// const defaultCakeBases = [
-//   "Chocolate",
-//   "Vanilla",
-//   "Strawberry",
-//   "Red Velvet",
-//   "Lemon",
-//   "Carrot",
-//   "Marble",
-//   "Coconut",
-//   "Funfetti",
-//   "Pumpkin Spice",
-//   "Caramel",
-//   "Almond",
-//   "Hazelnut",
-//   "Mocha",
-//   "Banana",
-//   "Raspberry",
-//   "Blueberry",
-//   "Pineapple",
-//   "Coconut",
-//   "Mint Chocolate Chip"
-// ];
-
 const basesSchema = new mongoose.Schema({
     price: Number,
     cake_bases: String,
