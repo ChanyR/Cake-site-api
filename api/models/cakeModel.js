@@ -23,9 +23,8 @@ exports.validatecake = (_bodyValid) => {
     let joiSchema = Joi.object({
         order_number: Joi.string().min(2).max(99).required(),
         baker_id: Joi.string().required(),
-        cake_base: Joi.string().required(),
+        cake_base: Joi.required(),
         cake_decorations: Joi.required(),
-        // cake_decorations: Joi.allow(),
         price: Joi.number().min(1).max(9999).required(),
         status:Joi.required(),
     })
