@@ -82,7 +82,7 @@ exports.login= async (req, res) => {
             return res.status(401).json({ msg: "Email or password is worng, code:2" })
         }
         let token = createToken(user._id, user.role);
-        res.json({ token: token });
+        res.json({user:{_id:user._id,name:user.name,email:user.email,role:user.role}, token: token });
     }
     catch (err) {
         console.log(err)
