@@ -37,3 +37,13 @@ exports.loginValid = (_bodyValid) => {
   })
   return joiSchema.validate(_bodyValid);
 }
+
+exports.validateEditUser = (_bodyValid) => {
+  let joiSchema = Joi.object({
+    name: Joi.string().min(2).max(50).required(),
+    email: Joi.string().min(2).max(100).email().required(),
+    password: Joi.allow(),
+    role:Joi.allow(),
+  })
+  return joiSchema.validate(_bodyValid);
+}

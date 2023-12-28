@@ -80,29 +80,21 @@ exports.editBakerById = async (req, res) => {
 
 exports.deleteBakerById = async (req, res) => {
   try {
-    let delId = req.params.delId;
     let data;
-    let user = await UserModel.findById(delId);
-    let userId = user.user_id;
     if (req.tokenData.role == "admin") {
-      if (user.role == "baker") {
-        data = await BakerModel.deleteOne({ user_id: user._id,});
-      }
-      data = await UserModel.deleteOne({
-        _id: delId
-      });
+      let delId = req.params.delId;
+      data = await BakerModel.deleteOne({ user_id: delId });
+      await UserModel.findByIdAndUpdate(
+        delId,
+        { role: "user" },
+        { new: true }
+      );
+      res.json(data);
     }
     if (data.deletedCount == 0) {
       res.json({
         msg: "not valid id or you are not allowed to erase. nothing was erased",
       });
-    } else {
-      await UserModel.findByIdAndUpdate(
-        userId,
-        { role: "user" },
-        { new: true }
-      );
-      res.json(data);
     }
   } catch (err) {
     console.log(err);
