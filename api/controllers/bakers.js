@@ -19,21 +19,31 @@ exports.get = async (req, res) => {
   }
 };
 
-exports.addBaker = async(req, res) => {
+exports.addBaker = async (req, res) => {
   let validBody = validateBaker(req.body);
   if (validBody.error) {
     return res.status(400).json(validBody.error.details);
   }
   try {
-    let jsonUser = {name: req.body.name,email: req.body.email,password: req.body.password,role: "baker"};
+    let jsonUser = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      role: "baker",
+    };
     let user = new UserModel(jsonUser);
     user.password = await bcrypt.hash(user.password, 10);
-    let resp=await user.save();
+    let resp = await user.save();
 
-    let jsonBaker = { name: req.body.name,email: req.body.email,user_id:resp._id,likes: req.body.likes,};
+    let jsonBaker = {
+      name: req.body.name,
+      email: req.body.email,
+      user_id: resp._id,
+      likes: req.body.likes,
+    };
     let baker = new BakerModel(jsonBaker);
     await baker.save();
-    
+
     res.status(201).json(baker);
   } catch (err) {
     console.log(err);
@@ -72,14 +82,14 @@ exports.deleteBakerById = async (req, res) => {
   try {
     let delId = req.params.delId;
     let data;
-    let userId=await BakerModel.findById(delId);
-    userId=userId.user_id;
+    let user = await UserModel.findById(delId);
+    let userId = user.user_id;
     if (req.tokenData.role == "admin") {
-      data = await BakerModel.deleteOne({ _id: delId });
-    } else {
-      data = await BakerModel.deleteOne({
-        _id: delId,
-        user_id: req.tokenData._id,
+      if (user.role == "baker") {
+        data = await BakerModel.deleteOne({ user_id: user._id,});
+      }
+      data = await UserModel.deleteOne({
+        _id: delId
       });
     }
     if (data.deletedCount == 0) {
@@ -87,7 +97,11 @@ exports.deleteBakerById = async (req, res) => {
         msg: "not valid id or you are not allowed to erase. nothing was erased",
       });
     } else {
-      await UserModel.findByIdAndUpdate(userId,{ role: 'user' },{ new: true });
+      await UserModel.findByIdAndUpdate(
+        userId,
+        { role: "user" },
+        { new: true }
+      );
       res.json(data);
     }
   } catch (err) {
@@ -167,18 +181,20 @@ exports.createBaseBaker = async (req, res) => {
   }
 };
 
-
 exports.createCommentBaker = async (req, res) => {
   let { bakerId } = req.params;
-  let  comment = req.body.comment;
+  let comment = req.body.comment;
   let userId = req.tokenData._id;
 
   try {
-    let baker=await BakerModel.findById(bakerId)
+    let baker = await BakerModel.findById(bakerId);
     if (baker) {
-      baker = await BakerModel.updateOne({ _id: bakerId },{ $push: { 'comments': {comment:comment,by_user:userId} } } );
+      baker = await BakerModel.updateOne(
+        { _id: bakerId },
+        { $push: { comments: { comment: comment, by_user: userId } } }
+      );
     } else {
-      baker = { msg: "baker is not exist"};
+      baker = { msg: "baker is not exist" };
     }
     res.json(baker);
   } catch (err) {
