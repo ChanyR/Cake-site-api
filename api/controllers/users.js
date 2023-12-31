@@ -171,7 +171,6 @@ exports.changeToBaker = async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       user_id: updatedUser._id,
-      likes: 0,
     };
     let baker = new BakerModel(jsonBaker);
     await baker.save();

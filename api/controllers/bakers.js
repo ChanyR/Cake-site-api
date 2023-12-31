@@ -116,18 +116,36 @@ exports.getBakerById = async (req, res) => {
 };
 
 exports.addLikesToBakerById = async (req, res) => {
+  let bakerId = req.params.editId;
+  let userId = req.tokenData._id;
+
   try {
-    let id = req.params.editId;
-    let data = await BakerModel.findById(id);
-    let dataToEdit = data._doc;
-    dataToEdit.likes += 1;
-    data = await BakerModel.updateOne({ _id: id }, dataToEdit);
+    const baker = await BakerModel.findById(bakerId);
+    if (!baker) {
+      return res.status(404).json({ msg: "Baker not found" });
+    }
+    const isLiked = baker.likes.includes(userId);
+    let updateQuery = {};
+
+    if (isLiked) {
+      updateQuery = { $pull: { likes: userId } };
+    } else {
+      updateQuery = { $addToSet: { likes: userId } };
+    }
+
+    let data = await BakerModel.updateOne(
+      { _id: bakerId },
+      updateQuery
+    );
+
     res.json(data);
+    
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "There error, try again later", err });
   }
 };
+
 
 exports.createDecorationBaker = async (req, res) => {
   let { decorationId } = req.params;
