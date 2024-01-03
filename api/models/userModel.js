@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
+  image:String,
   date_created: {
     type: Date, default: Date.now()
   },
@@ -26,6 +27,7 @@ exports.validateUser = (_bodyValid) => {
     name: Joi.string().min(2).max(50).required(),
     email: Joi.string().min(2).max(100).email().required(),
     password: Joi.string().min(6).max(50).required(),
+    image: Joi.string().min(6).max(100)
   })
   return joiSchema.validate(_bodyValid);
 }
