@@ -12,7 +12,7 @@ exports.transporter = nodemailer.createTransport({
 
 
 exports.generatePassword = () => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const characters = 'AbCdEfGhIjKlMnOpQrStUvWxYz0123456789';
     let password = '';
     for (let i = 0; i < 8; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length);

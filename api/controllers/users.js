@@ -117,14 +117,30 @@ exports.sendEmail = async (req, res) => {
   let { to } = req.body;
   let password = generatePassword();
   to = to.toLowerCase();
+  let user = await UserModel.findOne({ email: to });
   const mailOptions = {
     from: "boutiquecakes10@gmail.com",
     to,
-    subject: "verified email",
-    text: `Your new password is: ${password}`,
+    subject: "[Boutique Cakes] reset your password",
+    // text: `Your new password is: ${password}`,
+    html: `
+      <html>
+        <body style="direction: rtl;">
+          <h1 style="color:rgb(224, 216, 201);">אתחול סיסמת Boutique Cakes</h1>
+          <p>הי ${user.name}</p>
+          <p>ע"מ לשחזר את סיסמתך עליך להזין באתר את הקוד הבא: ${password}</p>
+          <img src='../../public/logo.jpeg' alt="Boutique Cakes Logo" style="max-width: 100%; height: auto;">
+        </body>
+      </html>
+    `
   };
-  mailPassword.push({ to, password });
-  console.log(mailPassword);
+  const index = mailPassword.findIndex((item) => item.to === to);
+  if (index !== -1) {
+    mailPassword[index] = { to, password };
+  } else {
+    mailPassword.push({ to, password });
+  }
+//   console.log(mailPassword);
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -132,19 +148,23 @@ exports.sendEmail = async (req, res) => {
       res.status(500).send("Internal Server Error");
     } else {
       console.log("Email sent:", info.response);
-      res.status(200).send("Email sent successfully");
+      res
+        .status(200)
+        .send({ status: "Email sent successfully", code: password });
     }
   });
 };
 
 exports.resetPassword = async (req, res) => {
   let { tempPassword, newPassword, email } = req.body;
+  console.log(req.body);
   email = email.toLowerCase();
-  console.log("mailPassword", mailPassword[0]);
-  console.log("mailPassword", mailPassword);
-  let obj = mailPassword.find((item) => item.to == email);
-  console.log("obj", obj);
+  let user = await UserModel.findOne({ email: email });
+  if (!user) {
+    return res.status(401).json({ msg: "user not exist" });
+  }
 
+  let obj = mailPassword.find((item) => item.to == email);
   if (obj.password == tempPassword) {
     let passwordB = await bcrypt.hash(newPassword, 10);
     let data = await UserModel.updateOne(
@@ -238,5 +258,15 @@ exports.changeToBaker = async (req, res) => {
   } catch (error) {
     console.error("Error updating user role:", error);
     return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+exports.isExistEmail = async (req, res) => {
+  let email = req.params.email;
+  let user = await UserModel.findOne({ email: email });
+  if (!user) {
+    return res.status(201).json({ msg: "false" });
+  } else {
+    return res.status(200).json({ msg: "true" });
   }
 };
