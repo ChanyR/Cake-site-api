@@ -116,11 +116,22 @@ exports.sendEmail = async (req, res) => {
   let { to } = req.body;
   let password = generatePassword();
   to = to.toLowerCase();
+  let user = await UserModel.findOne({ email: to });
   const mailOptions = {
     from: "boutiquecakes10@gmail.com",
     to,
     subject: "[Boutique Cakes] reset your password",
-    text: `Your new password is: ${password}`,
+    // text: `Your new password is: ${password}`,
+    html: `
+      <html>
+        <body style="direction: rtl;">
+          <h1 style="color:rgb(224, 216, 201);">אתחול סיסמת Boutique Cakes</h1>
+          <p>הי ${user.name}</p>
+          <p>ע"מ לשחזר את סיסמתך עליך להזין באתר את הקוד הבא: ${password}</p>
+          <img src='../../public/logo.jpeg' alt="Boutique Cakes Logo" style="max-width: 100%; height: auto;">
+        </body>
+      </html>
+    `
   };
   const index = mailPassword.findIndex((item) => item.to === to);
   if (index !== -1) {
