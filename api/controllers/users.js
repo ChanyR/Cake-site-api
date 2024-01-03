@@ -7,6 +7,13 @@ const {
   validateEditUser,
 } = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const { transporter, generatePassword } = require("../middlewares/email");
+
+let mailPassword = [];
+function updateArray(updatedArray) {
+  // הצהרה חוזרת על המערך המעודכן
+  mailPassword = [...updatedArray];
+}
 
 exports.get = async (req, res) => {
   let perPage = Math.min(req.query.perPage, 20) || 10;
@@ -102,6 +109,53 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "err", err });
+  }
+};
+
+exports.sendEmail = async (req, res) => {
+  let { to } = req.body;
+  let password = generatePassword();
+  to = to.toLowerCase();
+  const mailOptions = {
+    from: "boutiquecakes10@gmail.com",
+    to,
+    subject: "verified email",
+    text: `Your new password is: ${password}`,
+  };
+  mailPassword.push({ to, password });
+  console.log(mailPassword);
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email:", error);
+      res.status(500).send("Internal Server Error");
+    } else {
+      console.log("Email sent:", info.response);
+      res.status(200).send("Email sent successfully");
+    }
+  });
+};
+
+exports.resetPassword = async (req, res) => {
+  let { tempPassword, newPassword, email } = req.body;
+  email = email.toLowerCase();
+  console.log("mailPassword", mailPassword[0]);
+  console.log("mailPassword", mailPassword);
+  let obj = mailPassword.find((item) => item.to == email);
+  console.log("obj", obj);
+
+  if (obj.password == tempPassword) {
+    let passwordB = await bcrypt.hash(newPassword, 10);
+    let data = await UserModel.updateOne(
+      { email: email },
+      { password: passwordB }
+    );
+    const filteredArr = mailPassword.filter((item) => item.to !== email);
+    updateArray(filteredArr);
+    console.log("mailPassword reset", mailPassword);
+    res.json(data);
+  } else {
+    res.json({ msg: "the password not match" });
   }
 };
 
