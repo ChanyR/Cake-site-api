@@ -46,6 +46,7 @@ exports.validateEditUser = (_bodyValid) => {
     email: Joi.string().min(2).max(100).email().required(),
     password: Joi.allow(),
     role:Joi.allow(),
+    image: Joi.string().min(6).max(100)
   })
   return joiSchema.validate(_bodyValid);
 }
