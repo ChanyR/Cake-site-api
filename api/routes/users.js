@@ -39,4 +39,7 @@ router.post("/sendEmail", userControllers.sendEmail);
 // domain/users/resetPassword
 router.patch("/resetPassword", userControllers.resetPassword);
 
+// domain/users/isExistEmail/:email
+router.get("/isExistEmail/:email", userControllers.isExistEmail);
+
 module.exports = router;
