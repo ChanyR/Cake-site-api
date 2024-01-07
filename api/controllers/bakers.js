@@ -8,7 +8,7 @@ exports.get = async (req, res) => {
   let perPage = req.query.perPage || 10;
   let page = req.query.page || 1;
   try {
-    let data = await BakerModel.find({})
+    let data = await BakerModel.find({}).populate({path:'cake_bases',model:'bases'}).populate({path:'cake_decorations',model:'decorations'})
       .limit(perPage)
       .skip((page - 1) * perPage)
       .sort({ _id: -1 });
@@ -107,7 +107,7 @@ exports.deleteBakerById = async (req, res) => {
 exports.getBakerById = async (req, res) => {
   try {
     let id = req.params.id;
-    let data = await BakerModel.findById(id);
+    let data = await BakerModel.findById(id).populate({path:'cake_bases',model:'bases'}).populate({path:'cake_decorations',model:'decorations'});
     res.json(data);
   } catch (err) {
     console.log(err);
