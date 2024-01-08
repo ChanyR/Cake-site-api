@@ -59,6 +59,8 @@ exports.editBakerById = async (req, res) => {
   try {
     let editId = req.params.editId;
     let data;
+    let dataUser;
+    console.log(req.body);
     if (req.tokenData.role == "admin") {
       data = await BakerModel.updateOne({ _id: editId }, req.body);
     } else {
