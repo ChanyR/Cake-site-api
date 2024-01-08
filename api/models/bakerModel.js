@@ -23,6 +23,7 @@ exports.validateBaker = (_bodyValid) => {
     name: Joi.string().min(2).max(99).required(),
     email: Joi.string().min(2).max(100).email().required(),
     password: Joi.allow(),
+    likes: Joi.allow(),
   });
   return joiSchema.validate(_bodyValid);
 };
